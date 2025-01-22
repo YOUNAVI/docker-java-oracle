@@ -1,9 +1,11 @@
-FROM ubuntu:latest
+FROM ubuntu:focal-20241011
 MAINTAINER SgrAlpha <admin@mail.sgr.io>
 
 ENV DEBIAN_FRONTEND=noninteractive \
     JAVA_HOME=/usr/lib/jvm/java-8-oracle \
     JRE_HOME=/usr/lib/jvm/java-8-oracle/jre
+
+COPY jdk8.tar.gz /
 
 RUN VERSION=8 && \
     UPDATE=202 && \
@@ -11,10 +13,7 @@ RUN VERSION=8 && \
     SIG=1961070e4c9b4e26a04e7f5a083f551e && \
     apt-get update && apt-get dist-upgrade -y && \
     apt-get install apt-utils ca-certificates curl -y --no-install-recommends && \
-    curl --silent --location --retry 3 --cacert /etc/ssl/certs/GeoTrust_Global_CA.pem \
-        --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
-        http://download.oracle.com/otn-pub/java/jdk/"${VERSION}"u"${UPDATE}"-b"${BUILD}"/"${SIG}"/jdk-"${VERSION}"u"${UPDATE}"-linux-x64.tar.gz \
-        | tar xz -C /tmp && \
+    tar -xz -C /tmp -f jdk8.tar.gz && \
     mkdir -p /usr/lib/jvm && mv /tmp/jdk1.${VERSION}.0_${UPDATE} "${JAVA_HOME}" && \
     apt-get autoclean && apt-get --purge -y autoremove && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \

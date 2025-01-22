@@ -69,5 +69,10 @@ The following tags are archived:
 * Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files
   * This is enabled by defualt in Java 9, and Java 8 updates later than 162.
 
-
+## Update the Dockerfile
+Changed the Dockerfile because of the broken link and command.
+1. "FROM ubuntu:lastest" -> "From ubuntu:focal-20241011"
+2. add "COPY jdk8.tar.gz /" and you should get your jdk tar gz from the official ORACLE Page (https://www.oracle.com/kr/java/technologies/javase/javase8-archive-downloads.html).
+3. delete "curl ...GeoTrust_Global_CA.pem ... http://download.oracle.com/"-linux-x64.tar.gz \" which is not available anymore.
+4. fix "tar xz -C /tmp" with "tar -xz -C /tmp -f jdk8.tar.gz" because you need to specify the file.
 
